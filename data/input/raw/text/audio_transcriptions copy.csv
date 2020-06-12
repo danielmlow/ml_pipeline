@@ -1,0 +1,3 @@
+id,timestep,task,audio_filename,transcription
+0,0,0,id-000_timestep-000_task-000.wav,"Sometimes I'm sad, but I'm usually hopeful things will get better."
+1,0,0,id-001_timestep-000_task-000.wav,I'm sad and I'm hopeless and I just don't know what to do.
