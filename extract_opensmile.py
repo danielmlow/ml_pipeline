@@ -95,14 +95,18 @@ def extract_features(feature_type = 'compare16'  , funtionals = True, opensmile_
 
 def opensmile_dir_to_csv(input_dir = './', output_dir='./', output_filename='egemaps_vector'):
 	files = os.listdir(input_dir)
-	try: files.remove('.DS_Store')
-	except: pass
+	files = [n for n in files if '.csv' in n]
+
 	all = []
 
 	for file in files:
 		df_1csv = pd.read_csv(input_dir+file, sep=';')
-		del df_1csv['frameTime']
-		all.append(df_1csv)
+		try:
+			del df_1csv['frameTime']
+			all.append(df_1csv)
+		except:
+			pass
+
 
 
 	df = pd.concat(all)
@@ -121,31 +125,21 @@ if __name__ == "__main__":
 	#                   '25301_p4_freeresponse', '25702_p1_freeresponse', '25702_p2_freeresponse']
 
 	# MODIFY HERE
-	input_dir = './../../datum/northwestern/datasets/'
-	extract_features(feature_type='compare16', funtionals=True, input_dir=input_dir,
-	                 wavs_dir='raw_data_wavs', output_dir=input_dir)
+	input_dir = './../../libs/ml_pipeline/data/input/raw/audio_converted_wavs/'
+	extract_features(feature_type='egemaps',opensmile_dir = './../opensmile-2.3.0/', funtionals=True, input_dir=input_dir,
+	                 output_dir=input_dir)
 
 	# 	Concat all csv to single csv.
 	#1. loop through all dirs, for each dir, concat. l
 	# Remove background , and sentences csv
 	# For vectors create csv files with text, and have a column with the npy file for sequences.
 
-
-	feature_types = ['compare16']
+	#
+	feature_types = ['egemaps']
 	trimmed = False
 	# missing_sentences = ['05601_p3_freeresp.csv', '06501_p2_freeresp.csv', '06501_p3_freeresp.csv', '06501_p4_freeresp_1.csv', '06502_p2_freeresp.csv', '09002_p4_freeresp.csv', '09502_p1_freeresp.csv', '09502_p4_freeresp.csv', '10002_p1_freeresp_2.csv', '10502_p3_freeresp_1.csv', '10502_p3_freeresp_2.csv', '10701_p1_freeresp.csv', '10701_p2_freeresp.csv', '10701_p3_freeresp.csv', '12202_p1_freeresp.csv', '12202_p2_freeresp.csv', '12202_p3_freeresp.csv', '12202_p4_freeresp.csv', '13401_p4_freeresp.csv', '13701_p3_freeresp.csv', '13702_p3_freeresp.csv', '13702_p4_freeresp.csv', '16502_p1_freeresp.csv', '19702_p1_freeresp.csv', '19702_p2_freeresp.csv', '20201_p4_freeresp.csv', '21902_p2_freeresp.csv', '24401_p1_freeresp.csv', '24501_p3_freeresp.csv', '25301_p4_freeresp.csv', '25402_p3_freeresp.csv', '25601_p1_freeresp.csv', '25601_p2_freeresp.csv', '25702_p1_freeresp.csv', '25702_p2_freeresp.csv', '25702_p3_freeresp.csv', '25702_p4_freeresp.csv', '27001_p3_freeresp.csv'] #too noisy
 	for feature_type in feature_types:
-		df_audio, df_audio_text = opensmile_dir_to_csv(input_dir = input_dir, sentence_csv_filename = 'sentences', feature_type =feature_type ,
-		                          output_dir = input_dir, only_specific_files ='freeresp', trimmed=False)
+		df_audio = opensmile_dir_to_csv(input_dir = input_dir,
+		                          output_dir = input_dir, output_filename=f'{feature_type}_vector')
 
-
-
-	feature_types = ['compare16', 'egemaps']
-	# missing_sentences = ['05601_p3_freeresp.csv', '06501_p2_freeresp.csv', '06501_p3_freeresp.csv', '06501_p4_freeresp_1.csv', '06502_p2_freeresp.csv', '09002_p4_freeresp.csv', '09502_p1_freeresp.csv', '09502_p4_freeresp.csv', '10002_p1_freeresp_2.csv', '10502_p3_freeresp_1.csv', '10502_p3_freeresp_2.csv', '10701_p1_freeresp.csv', '10701_p2_freeresp.csv', '10701_p3_freeresp.csv', '12202_p1_freeresp.csv', '12202_p2_freeresp.csv', '12202_p3_freeresp.csv', '12202_p4_freeresp.csv', '13401_p4_freeresp.csv', '13701_p3_freeresp.csv', '13702_p3_freeresp.csv', '13702_p4_freeresp.csv', '16502_p1_freeresp.csv', '19702_p1_freeresp.csv', '19702_p2_freeresp.csv', '20201_p4_freeresp.csv', '21902_p2_freeresp.csv', '24401_p1_freeresp.csv', '24501_p3_freeresp.csv', '25301_p4_freeresp.csv', '25402_p3_freeresp.csv', '25601_p1_freeresp.csv', '25601_p2_freeresp.csv', '25702_p1_freeresp.csv', '25702_p2_freeresp.csv', '25702_p3_freeresp.csv', '25702_p4_freeresp.csv', '27001_p3_freeresp.csv'] #too noisy
-	for feature_type in feature_types:
-		df_audio, df_audio_text = opensmile_dir_to_csv(input_dir = input_dir, sentence_csv_filename = 'sentences', feature_type =feature_type ,
-		                          output_dir = input_dir, only_specific_files ='freeresp', trimmed=True)
-
-
-
-	# df = pd.read_csv(input_dir +'text_audio_compare16_freeresp.csv')
+	# # df = pd.read_csv(input_dir +'text_audio_compare16_freeresp.csv')
