@@ -142,4 +142,3 @@ if __name__ == "__main__":
 		df_audio = opensmile_dir_to_csv(input_dir = input_dir,
 		                          output_dir = input_dir, output_filename=f'{feature_type}_vector')
 
-	# # df = pd.read_csv(input_dir +'text_audio_compare16_freeresp.csv')
